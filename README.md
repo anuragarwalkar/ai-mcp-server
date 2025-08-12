@@ -10,7 +10,7 @@ A comprehensive **Model Context Protocol (MCP)** mock server for testing and dev
 - 📊 **Rich Mock Data** - Users, posts, products, orders, and analytics
 - 🎨 **Beautiful CLI Interface** - Colorful output with comprehensive logging
 - 📝 **Winston Logging** - Structured logging with multiple transports
-- ⚡ **Instant Setup** - Run directly with `npx mcp-mock`
+- ⚡ **Instant Setup** - Run directly with `npx mcp-mock-server`
 - 🔧 **Configurable** - Custom data, ports, and configurations
 - 🌐 **CORS Enabled** - Ready for web development
 - 📋 **JSON Schema Validation** - Proper input validation for all tools
@@ -23,19 +23,19 @@ A comprehensive **Model Context Protocol (MCP)** mock server for testing and dev
 
 ### Run Instantly (No Installation)
 ```bash
-npx mcp-mock
+npx mcp-mock-server
 ```
 
 ### Install Globally
 ```bash
-npm install -g mcp-mock
-mcp-mock
+npm install -g mcp-mock-server
+mcp-mock-server
 ```
 
 ### Install Locally
 ```bash
-npm install mcp-mock
-npx mcp-mock
+npm install mcp-mock-server
+npx mcp-mock-server
 ```
 
 ## 🛠️ Available Tools
@@ -75,22 +75,22 @@ npx mcp-mock
 
 ### List Available Tools
 ```bash
-mcp-mock tools
+mcp-mock-server tools
 ```
 
 ### Get Streaming Info
 ```bash
-mcp-mock streaming
+mcp-mock-server streaming
 ```
 
 ### Start with Custom Configuration
 ```bash
-mcp-mock --port 8080 --log-level debug
+mcp-mock-server --port 8080 --log-level debug
 ```
 
 ### Use Custom Data File
 ```bash
-mcp-mock --data ./my-data.json
+mcp-mock-server --data ./my-data.json
 ```
 
 ## 🌐 API Endpoints
@@ -447,7 +447,7 @@ ws.run_forever()
 ## ⚙️ Configuration Options
 
 ```bash
-mcp-mock [options]
+mcp-mock-server [options]
 
 Options:
   -p, --port <port>        Port to run server on (default: 7988)
@@ -580,7 +580,7 @@ MIT License - see LICENSE file for details.
 **🔗 Connect with the project:**
 - 📖 [MCP Specification](https://modelcontextprotocol.io/docs)
 - 🛠️ [GitHub Repository](https://github.com/anuragarwalkar/ai-mcp-server)
-- 📦 [NPM Package](https://www.npmjs.com/package/mcp-mock)
+- 📦 [NPM Package](https://www.npmjs.com/package/mcp-mock-server)
 - 🐛 [Report Issues](https://github.com/anuragarwalkar/ai-mcp-server/issues)
 
 Made with ❤️ by [Anurag Arwalkar](https://github.com/anuragarwalkar)

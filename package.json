@@ -1,5 +1,5 @@
 {
-  "name": "mcp-mock-server",
+  "name": "mcp-mock-server-server",
   "version": "1.0.0",
   "type": "module",
   "description": "Comprehensive Model Context Protocol (MCP) mock server with Postman compatibility and 17+ tools for testing and development",
@@ -44,9 +44,9 @@
   "author": "Anurag Arwalkar",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/anuragarwalkar/mcp-mock-server/issues"
+    "url": "https://github.com/anuragarwalkar/mcp-mock-server-server/issues"
   },
-  "homepage": "https://github.com/anuragarwalkar/mcp-mock-server#readme",
+  "homepage": "https://github.com/anuragarwalkar/mcp-mock-server-server#readme",
   "engines": {
     "node": ">=18.0.0"
   },

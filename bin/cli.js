@@ -116,7 +116,7 @@ program
     });
     
     console.log(chalk.green('Quick Start:'));
-    console.log(chalk.gray('  1. Start the server: mcp-mock-server'));
+    console.log(chalk.gray('  1. Start the server: mcp-mock-server-server'));
     console.log(chalk.gray('  2. Connect to WebSocket: ws://localhost:7988/stream'));
     console.log(chalk.gray('  3. Send: {"type": "start_stream", "streamType": "user_activity"}'));
     console.log(chalk.gray('  4. Receive real-time data!\n'));

@@ -308,7 +308,7 @@ websocat ws://${this.host}:${this.port}/stream`
         }
       },
       serverInfo: {
-        name: 'mcp-mock',
+        name: 'mcp-mock-server',
         version: '0.0.1',
         description: 'Comprehensive MCP mock server for testing and development'
       },
@@ -490,7 +490,7 @@ websocat ws://${this.host}:${this.port}/stream`
                   }
                 },
                 serverInfo: {
-                  name: 'mcp-mock',
+                  name: 'mcp-mock-server',
                   version: '0.0.1',
                   description: 'Comprehensive MCP mock server for testing and development'
                 }

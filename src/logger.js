@@ -6,7 +6,7 @@ const consoleFormat = winston.format.combine(
   winston.format.colorize(),
   winston.format.printf(({ timestamp, level, message, service, ...meta }) => {
     const metaStr = Object.keys(meta).length ? JSON.stringify(meta, null, 2) : '';
-    return `${timestamp} [${service || 'MCP-MOCK'}] ${level}: ${message} ${metaStr}`;
+    return `${timestamp} [${service || 'MCP-MOCK-SERVER'}] ${level}: ${message} ${metaStr}`;
   })
 );
 
