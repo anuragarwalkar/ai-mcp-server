@@ -1,7 +1,8 @@
 {
   "name": "mcp-mock",
-  "version": "1.0.0",
-  "description": "demo json mcp server",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "demo json mcp mock server",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
