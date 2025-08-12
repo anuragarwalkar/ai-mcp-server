@@ -1,1 +1,1 @@
-# ai-mcp-server
+# mcp-server
