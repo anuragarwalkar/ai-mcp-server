@@ -13,7 +13,7 @@ async function main() {
     logger.info('Starting MCP Mock Server...');
     
     const options = {
-      port: process.env.PORT || 3000,
+      port: process.env.PORT || 7988,
       host: process.env.HOST || 'localhost'
     };
     

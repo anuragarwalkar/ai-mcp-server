@@ -221,6 +221,33 @@ export function getTools() {
         },
         required: ['text']
       }
+    },
+    {
+      name: 'start_stream',
+      description: 'Start a real-time data stream',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          streamType: { 
+            type: 'string', 
+            enum: ['user_activity', 'analytics', 'chat_simulation', 'sensor_data', 'log_events', 'stock_prices'], 
+            description: 'Type of stream to start' 
+          },
+          config: { 
+            type: 'object', 
+            description: 'Stream configuration (interval, etc.)' 
+          }
+        },
+        required: ['streamType']
+      }
+    },
+    {
+      name: 'get_streaming_info',
+      description: 'Get information about available streaming capabilities',
+      inputSchema: {
+        type: 'object',
+        properties: {}
+      }
     }
   ];
 }
@@ -281,6 +308,12 @@ export async function executeTool(toolName, mockData, args = {}) {
         break;
       case 'classify_text':
         result = handleClassifyText(args);
+        break;
+      case 'start_stream':
+        result = handleStartStream(args);
+        break;
+      case 'get_streaming_info':
+        result = handleGetStreamingInfo(args);
         break;
       default:
         throw new Error(`Unknown tool: ${toolName}`);
@@ -694,5 +727,142 @@ function handleClassifyText(args) {
     predictions: scores,
     topCategory: scores[0].category,
     confidence: scores[0].confidence
+  };
+}
+
+function handleStartStream(args) {
+  const { streamType, config = {} } = args;
+  
+  return {
+    success: true,
+    message: `To start streaming, connect to WebSocket endpoint and send start_stream message`,
+    streamType,
+    config,
+    instructions: {
+      websocketUrl: 'ws://localhost:7988/stream',
+      message: {
+        type: 'start_stream',
+        streamType,
+        config
+      }
+    },
+    availableStreamTypes: [
+      'user_activity',
+      'analytics', 
+      'chat_simulation',
+      'sensor_data',
+      'log_events',
+      'stock_prices'
+    ]
+  };
+}
+
+function handleGetStreamingInfo(args) {
+  return {
+    streaming: {
+      enabled: true,
+      websocketUrl: 'ws://localhost:7988/stream',
+      httpEndpoints: {
+        info: '/streaming/info',
+        stats: '/streaming/stats'
+      }
+    },
+    availableStreams: [
+      {
+        name: 'user_activity',
+        description: 'Real-time user activity events',
+        sampleData: {
+          userId: 123,
+          activity: 'page_view',
+          timestamp: '2025-08-13T00:00:00Z',
+          metadata: { sessionId: 'uuid', ip: '192.168.1.1' }
+        }
+      },
+      {
+        name: 'analytics',
+        description: 'Live analytics and metrics',
+        sampleData: {
+          activeUsers: 150,
+          pageViews: 1250,
+          revenue: '1234.56',
+          responseTime: 125
+        }
+      },
+      {
+        name: 'chat_simulation',
+        description: 'Simulated chat messages',
+        sampleData: {
+          id: 'uuid',
+          user: 'Alice',
+          message: 'Hello everyone!',
+          channel: 'general'
+        }
+      },
+      {
+        name: 'sensor_data',
+        description: 'IoT sensor data simulation',
+        sampleData: {
+          temperature: '23.5',
+          humidity: '65.2',
+          pressure: '1013.2',
+          motion: false
+        }
+      },
+      {
+        name: 'log_events',
+        description: 'System log events',
+        sampleData: {
+          level: 'INFO',
+          service: 'api-server',
+          message: 'Request processed successfully',
+          requestId: 'uuid'
+        }
+      },
+      {
+        name: 'stock_prices',
+        description: 'Stock price updates',
+        sampleData: {
+          symbol: 'AAPL',
+          price: '180.50',
+          change: '+2.30',
+          volume: 125000
+        }
+      }
+    ],
+    connectionExamples: {
+      javascript: `
+const ws = new WebSocket('ws://localhost:7988/stream');
+ws.onopen = () => {
+  // Start a stream
+  ws.send(JSON.stringify({
+    type: 'start_stream',
+    streamType: 'user_activity',
+    config: { interval: 1000 }
+  }));
+};
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log('Received:', data);
+};`,
+      python: `
+import websocket
+import json
+
+def on_message(ws, message):
+    data = json.loads(message)
+    print('Received:', data)
+
+def on_open(ws):
+    ws.send(json.dumps({
+        'type': 'start_stream',
+        'streamType': 'analytics',
+        'config': {'interval': 2000}
+    }))
+
+ws = websocket.WebSocketApp('ws://localhost:7988/stream',
+                          on_open=on_open,
+                          on_message=on_message)
+ws.run_forever()`
+    }
   };
 }

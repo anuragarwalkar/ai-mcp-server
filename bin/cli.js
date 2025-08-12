@@ -6,12 +6,12 @@ import { createMCPServer } from '../src/server.js';
 import logger from '../src/logger.js';
 
 program
-  .name('mcp-mock')
+  .name('mcp-mock-server')
   .description('A comprehensive MCP (Model Context Protocol) mock server for testing and development')
   .version('0.0.1');
 
 program
-  .option('-p, --port <port>', 'port to run the server on', '3000')
+  .option('-p, --port <port>', 'port to run the server on', '7988')
   .option('-h, --host <host>', 'host to bind the server to', 'localhost')
   .option('-l, --log-level <level>', 'logging level (error, warn, info, debug)', 'info')
   .option('-c, --config <file>', 'configuration file path')
@@ -80,13 +80,50 @@ program
       { name: 'generate_uuid', description: 'Generate a unique identifier' },
       { name: 'format_date', description: 'Format dates in various formats' },
       { name: 'analyze_sentiment', description: 'Mock sentiment analysis' },
-      { name: 'classify_text', description: 'Mock text classification' }
+      { name: 'classify_text', description: 'Mock text classification' },
+      { name: 'start_stream', description: 'Start a real-time data stream' },
+      { name: 'get_streaming_info', description: 'Get streaming capabilities info' }
     ];
 
     tools.forEach(tool => {
       console.log(chalk.green(`  ${tool.name}`));
       console.log(chalk.gray(`    ${tool.description}\n`));
     });
+  });
+
+program
+  .command('streaming')
+  .description('Get information about streaming capabilities')
+  .action(() => {
+    console.log(chalk.blue.bold('\n📡 MCP Mock Server - Streaming Capabilities\n'));
+    
+    console.log(chalk.green('WebSocket Endpoint:'));
+    console.log(chalk.gray('  ws://localhost:7988/stream\n'));
+    
+    console.log(chalk.green('Available Stream Types:'));
+    const streams = [
+      { name: 'user_activity', description: 'Real-time user activity events' },
+      { name: 'analytics', description: 'Live analytics and metrics' },
+      { name: 'chat_simulation', description: 'Simulated chat messages' },
+      { name: 'sensor_data', description: 'IoT sensor data simulation' },
+      { name: 'log_events', description: 'System log events' },
+      { name: 'stock_prices', description: 'Stock price updates' }
+    ];
+    
+    streams.forEach(stream => {
+      console.log(chalk.cyan(`  ${stream.name}`));
+      console.log(chalk.gray(`    ${stream.description}\n`));
+    });
+    
+    console.log(chalk.green('Quick Start:'));
+    console.log(chalk.gray('  1. Start the server: mcp-mock-server'));
+    console.log(chalk.gray('  2. Connect to WebSocket: ws://localhost:7988/stream'));
+    console.log(chalk.gray('  3. Send: {"type": "start_stream", "streamType": "user_activity"}'));
+    console.log(chalk.gray('  4. Receive real-time data!\n'));
+    
+    console.log(chalk.green('Test with websocat:'));
+    console.log(chalk.gray('  cargo install websocat'));
+    console.log(chalk.gray('  websocat ws://localhost:7988/stream\n'));
   });
 
 program
