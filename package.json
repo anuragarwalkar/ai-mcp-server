@@ -1,5 +1,5 @@
 {
-  "name": "@ai/mcp-server",
+  "name": "mcp-mock",
   "version": "1.0.0",
   "description": "demo json mcp server",
   "main": "index.js",
