@@ -57,17 +57,41 @@ class MCPServer {
   }
 
   async close() {
-    if (this.streamingService) {
-      this.streamingService.close();
-    }
-    if (this.server) {
-      return new Promise((resolve) => {
-        this.server.close(() => {
-          logger.mcp.shutdown('Server closed normally');
+    return new Promise((resolve) => {
+      let resolved = false;
+      
+      // Force resolve after 3 seconds
+      const timeout = setTimeout(() => {
+        if (!resolved) {
+          resolved = true;
+          logger.warn('Server close timeout, forcing resolution');
           resolve();
+        }
+      }, 3000);
+      
+      if (this.streamingService) {
+        try {
+          this.streamingService.close();
+        } catch (error) {
+          logger.error('Error closing streaming service', error);
+        }
+      }
+      
+      if (this.server) {
+        this.server.close(() => {
+          if (!resolved) {
+            resolved = true;
+            clearTimeout(timeout);
+            logger.mcp.shutdown('Server closed normally');
+            resolve();
+          }
         });
-      });
-    }
+      } else if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        resolve();
+      }
+    });
   }
 
   async handleRequest(req, res) {
@@ -403,8 +427,6 @@ websocat ws://${this.host}:${this.port}/stream`
 
   // MCP Streamable HTTP Transport - Official MCP Protocol Implementation
   async handleMCPJsonRpc(req, res) {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    
     // Check for MCP Protocol Version header
     const protocolVersion = req.headers['mcp-protocol-version'] || '2024-11-05';
     const acceptHeader = req.headers['accept'] || '';

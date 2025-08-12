@@ -20,16 +20,34 @@ async function main() {
     const server = await createMCPServer(options);
     
     // Graceful shutdown handling
+    let isShuttingDown = false;
+    
     const shutdown = async (signal) => {
+      if (isShuttingDown) {
+        console.log('⏳ Already shutting down, please wait...');
+        return;
+      }
+      
+      isShuttingDown = true;
       logger.mcp.shutdown(`${signal} received`);
       console.log(`\n👋 Received ${signal}, shutting down gracefully...`);
       
+      // Force exit after 5 seconds if graceful shutdown fails
+      const forceExitTimer = setTimeout(() => {
+        console.log('⚠️  Force exiting after timeout');
+        process.exit(1);
+      }, 5000);
+      
       try {
         await server.close();
+        clearTimeout(forceExitTimer);
         logger.info('Server closed successfully');
+        console.log('✅ Server shutdown complete');
         process.exit(0);
       } catch (error) {
+        clearTimeout(forceExitTimer);
         logger.error('Error during shutdown', error);
+        console.error('❌ Error during shutdown:', error.message);
         process.exit(1);
       }
     };
