@@ -542,8 +542,29 @@ export class StreamingService {
 
   close() {
     if (this.wss) {
-      this.wss.close();
-      logger.info('WebSocket server closed');
+      // Stop all active streams
+      for (const [, stream] of this.streams) {
+        if (stream.interval) {
+          clearInterval(stream.interval);
+        }
+      }
+      this.streams.clear();
+      
+      // Close all client connections
+      for (const [clientId, client] of this.clients) {
+        try {
+          client.ws.close();
+        } catch (error) {
+          logger.debug('Error closing client connection', { clientId, error: error.message });
+        }
+      }
+      this.clients.clear();
+      
+      // Close WebSocket server
+      this.wss.close(() => {
+        logger.info('WebSocket server closed');
+      });
+      this.wss = null;
     }
   }
 }

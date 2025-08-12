@@ -24,19 +24,23 @@ async function main() {
     
     const shutdown = async (signal) => {
       if (isShuttingDown) {
-        console.log('⏳ Already shutting down, please wait...');
-        return;
+        return; // Silent return, don't show message again
       }
       
       isShuttingDown = true;
-      logger.mcp.shutdown(`${signal} received`);
-      console.log(`\n👋 Received ${signal}, shutting down gracefully...`);
       
-      // Force exit after 5 seconds if graceful shutdown fails
+      // Remove signal listeners to prevent multiple calls
+      process.removeAllListeners('SIGINT');
+      process.removeAllListeners('SIGTERM');
+      
+      logger.mcp.shutdown(`${signal} received`);
+      console.log(`\n👋 Shutting down gracefully...`);
+      
+      // Force exit after 3 seconds if graceful shutdown fails
       const forceExitTimer = setTimeout(() => {
         console.log('⚠️  Force exiting after timeout');
         process.exit(1);
-      }, 5000);
+      }, 3000);
       
       try {
         await server.close();

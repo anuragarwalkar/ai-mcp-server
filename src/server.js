@@ -60,15 +60,16 @@ class MCPServer {
     return new Promise((resolve) => {
       let resolved = false;
       
-      // Force resolve after 3 seconds
+      // Shorter timeout for npx compatibility
       const timeout = setTimeout(() => {
         if (!resolved) {
           resolved = true;
           logger.warn('Server close timeout, forcing resolution');
           resolve();
         }
-      }, 3000);
+      }, 2000);
       
+      // Close streaming service first
       if (this.streamingService) {
         try {
           this.streamingService.close();
@@ -77,6 +78,7 @@ class MCPServer {
         }
       }
       
+      // Close HTTP server
       if (this.server) {
         this.server.close(() => {
           if (!resolved) {
@@ -86,6 +88,16 @@ class MCPServer {
             resolve();
           }
         });
+        
+        // Force close after 1 second
+        setTimeout(() => {
+          if (!resolved) {
+            resolved = true;
+            clearTimeout(timeout);
+            logger.info('Server force closed');
+            resolve();
+          }
+        }, 1000);
       } else if (!resolved) {
         resolved = true;
         clearTimeout(timeout);
