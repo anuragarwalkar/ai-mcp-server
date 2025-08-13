@@ -173,7 +173,7 @@ export function getTools() {
       inputSchema: {
         type: 'object',
         properties: {
-          version: { type: 'number', enum: [1, 4], description: 'UUID version (1 or 4)' }
+          version: { type: 'string', enum: ['1', '4'], description: 'UUID version (1 or 4)' }
         }
       }
     },
@@ -581,7 +581,7 @@ function handleValidateEmail(args) {
 }
 
 function handleGenerateUUID(args) {
-  const version = args.version || 4;
+  const version = parseInt(args.version) || 4;
   let uuid;
   
   if (version === 4) {

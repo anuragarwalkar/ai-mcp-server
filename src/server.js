@@ -48,7 +48,8 @@ class MCPServer {
           });
           console.log(`🌟 MCP Mock Server running at http://${this.host}:${this.port}`);
           console.log(`📚 Available tools: ${this.tools.length}`);
-          console.log(`🔍 Health check: http://${this.host}:${this.port}/health`);
+          console.log(`� MCP JSON-RPC endpoint: http://${this.host}:${this.port}/`);
+          console.log(`�🔍 Health check: http://${this.host}:${this.port}/health`);
           console.log(`📡 WebSocket streaming: ws://${this.host}:${this.port}/stream`);
           resolve(this.server);
         }
@@ -132,6 +133,9 @@ class MCPServer {
     try {
       switch (url.pathname) {
         case '/':
+          // Root path should handle MCP JSON-RPC requests
+          await this.handleMCPJsonRpc(req, res);
+          break;
         case '/health':
           await this.handleHealth(req, res);
           break;
