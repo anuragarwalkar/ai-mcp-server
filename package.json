@@ -1,6 +1,6 @@
 {
   "name": "mcp-mock-server",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "Comprehensive Model Context Protocol (MCP) mock server with Postman compatibility and 17+ tools for testing and development",
   "main": "index.js",
